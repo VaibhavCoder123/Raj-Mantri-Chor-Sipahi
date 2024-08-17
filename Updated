@@ -1,0 +1,76 @@
+import random as r
+import time 
+from termcolor import colored
+def countdown(t): 
+	
+	while t: 
+		mins, secs = divmod(t, 60) 
+		timer = '{:02d}:{:02d}'.format(mins, secs) 
+		time.sleep(1) 
+		t -= 1
+t = 2 
+print('Welcome To Our Game Of Raja Mantri Chor Sipahi')
+countdown(int(t)) 
+print(colored('It is made with hardwork','cyan'))
+countdown(int(t)) 
+
+def assign_roles(players):
+    roles = ['RAJA', 'MANTRI', 'CHOR', 'SIPAHI']
+    r.shuffle(roles)
+    return dict(zip(players, roles))
+
+def find_chor(mantri, players_roles):
+    mantri_role = players_roles[mantri]
+    if mantri_role != 'MANTRI':
+        print(f'{mantri} is not the MANTRI')
+        return False
+    chor = input(f'{mantri}, who is the CHOR? ')
+    if players_roles[chor] == 'CHOR':
+        print('Right Answer')
+        return True
+    else:
+        print('Wrong Answer')
+        return False
+
+p1 = input(colored('Enter Player One Name: ','blue'))
+p2 = input(colored('Enter Player Two Name: ','green'))
+p3 = input(colored('Enter Player Three Name: ','cyan'))
+p4 = input(colored('Enter Player Four Name: ','yellow'))
+
+players = [p1, p2, p3, p4]
+
+scores = {p1: 0, p2: 0, p3: 0, p4: 0}
+
+play_again = 'y'
+
+while play_again == 'y':
+    roles = assign_roles(players)
+    raja = [player for player, role in roles.items() if role == 'RAJA'][0]
+    mantri = [player for player, role in roles.items() if role == 'MANTRI'][0]
+    sipahi = [player for player, role in roles.items() if role == 'SIPAHI'][0]
+
+    print(colored(f'{raja} is RAJA','magenta'))
+    print(colored('Who is the CHOR, MANTRI ji?','red'))
+
+    if find_chor(mantri, roles):
+        scores[mantri] += 500
+        scores[raja] += 100
+        scores[sipahi] += 100
+    else:
+        chor = [player for player, role in roles.items() if role == 'CHOR'][0]
+        scores[chor] += 500
+
+    scores[raja] += 1000
+
+    play_again = input(colored('Do you want to play again? (y/n): ','light_cyan'))
+
+print(colored(f'The total score of {p1} is {scores[p1]}','blue'))
+print(colored(f'The total score of {p2} is {scores[p2]}','green'))
+print(colored(f'The total score of {p3} is {scores[p3]}','cyan'))
+print(colored(f'The total score of {p4} is {scores[p4]}','yellow'))
+
+countdown(int(t)) 
+print(colored('Thank You for Playing','cyan'))
+countdown(int(t)) 
+print(colored('CLOSING....','red'))
+countdown(int(t)) 
